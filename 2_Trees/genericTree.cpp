@@ -157,9 +157,25 @@ bool isMirror(Node *node1, Node* node2){
 
 
 //flatten the generic tree(all children have one node in pre-order)
+//o(n2)
+void flatten(Node * node)
+{
+    vector<Node*> nchilds;
 
+    for(Node*n: node->childs){
+        flatten(n);
+        nchilds.push_back(n);
+        
+        for(Node*child: n->childs){
+            nchilds.push_back(child);
+        }
+        n->childs.clear();
+    }
+    node->childs.clear();
+    node->childs = nchilds;
+}
 
-
+//better solution
 void solve(){
     vector<int> arr = {10, 20, 50, -1, 60, -1, -1, 30, 70, -1, 80, 100, -1, 110, -1, -1, 90, -1, 40, 120, 140, -1, 150, -1, -1, -1};
     Node *node = createTree(arr);
