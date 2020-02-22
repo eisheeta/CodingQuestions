@@ -394,10 +394,26 @@ void bipartite(){
     vector<int> vis(n, -1);
     for(int i=0; i<n; i++){
         if(vis[i] == -1){
-            cout<< (boolalpha) <<bipartite(i, vis)<<endl;
+            cout<< (boolalpha)<< bipartite(i, vis)<<endl;
         }
     }
 }
+
+
+
+// find union
+
+
+
+
+
+
+
+
+
+
+
+
 
 void solve(){
     createGraph();
