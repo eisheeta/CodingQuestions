@@ -20,6 +20,7 @@ int find1(vector<int> &parent,int i)
         
         return find1(parent,parent[i]);
     }
+
      void union1(vector<int> &parent,int i,int j)
     {
         int x1=find1(parent,i);
@@ -36,9 +37,10 @@ int find1(vector<int> &parent,int i)
         for(int i=0;i<edges.size();i++)
         {
             if(s1.count(edges[i][0])==0)
-            s1.insert(edges[i][0]);
+                s1.insert(edges[i][0]);
+            
             if(s1.count(edges[i][1])==0)
-            s1.insert(edges[i][1]);
+                s1.insert(edges[i][1]);
         }
         vector<int>parent(s1.size()+1,-1);
         vector<int>ans;
@@ -108,6 +110,169 @@ int orangesRotting(vector<vector<int>>& grid) {
         return fresh ? -1 : count;
     }
 
-int main(){
 
+//LEETCODE 1061 LEXICOGRAPHICALLY SMALLEST EQUIVALENT STRING (USING UNION)
+/*Given strings A and B of the same length, we say A[i] and B[i] are equivalent characters. For example, if A = "abc" and B = "cde", then we have 'a' == 'c', 'b' == 'd', 'c' == 'e'.
+
+Equivalent characters follow the usual rules of any equivalence relation:
+
+Reflexivity: 'a' == 'a'
+Symmetry: 'a' == 'b' implies 'b' == 'a'
+Transitivity: 'a' == 'b' and 'b' == 'c' implies 'a' == 'c'
+
+*/
+
+char find2(vector<char> &parent, char i)
+    {
+            int r = (i-'a' ) +1;
+
+        if(parent[r]== -1)
+            return i;
+        
+        return find2(parent, parent[r]);
+    }
+    
+     void union1(vector<char> &parent, char i, char j)
+    {
+        int x1=find2(parent,i);
+        int x2=find2(parent,j);
+        if(x1!=x2 )
+        {
+            
+            if(int(x1) < int(x2))
+                parent[x1]=x2;
+            
+            else{
+                parent[x2] = x1;
+            }
+        }
+    }
+
+
+
+//LEETCODE 200. Number of Islands
+/*Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. 
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
+You may assume all four edges of the grid are all surrounded by water.*/
+int dir[4][2]= {{1,0}, {0,1}, {-1, 0}, {0, -1}};
+    
+    void dfs(int x, int y, vector<vector<char>> &grid){
+
+        grid[x][y] ='0';
+    for(int d=0; d<4; d++){
+        int i = x + dir[d][0];
+        int j = y + dir[d][1];
+
+        if(i>=0 && j>=0 && i< grid.size() && j<grid[0].size() && grid[i][j]=='1'){
+            dfs(i, j, grid);
+        }
+    }
+
+}
+
+
+int numIslands(vector<vector<char>>& grid){
+    
+    int n = grid.size();
+    if(n == 0){
+        return 0;
+    }
+        int m = grid[0].size();
+        int c=0;
+        
+    
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j]  == '1')
+                {   
+                    c++;
+                    dfs(i, j, grid);
+                    
+                }
+                
+            }
+        }
+        
+        return c;
+    }
+
+
+//LEETCODE 695. Max Area of Island
+/*Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land) connected 4-directionally 
+(horizontal or vertical.) 
+You may assume all four edges of the grid are surrounded by water.
+Find the maximum area of an island in the given 2D array. (If there is no island, the maximum area is 0.)*/
+
+int dfs1(int x, int y, vector<vector<int>> &grid){
+int count=0;
+    grid[x][y] =0;
+    for(int d=0; d<4; d++){
+        int i = x + dir[d][0];
+        int j = y + dir[d][1];
+
+        if(i>=0 && j>=0 && i< grid.size() && j<grid[0].size()){
+            count += dfs1(i, j, grid);
+        }
+    }
+
+    return count +1;
+}
+
+
+int maxAreaOfIsland(vector<vector<int>>& grid){
+
+    int n = grid.size();
+        int m = grid[0].size();
+        int maxArea =0;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j]  == 1)
+                {   
+                    int area = dfs1(i, j, grid);
+                    if(area > maxArea)
+                        maxArea = area;
+                }
+                
+            }
+        }
+        
+        return maxArea;
+
+}
+
+
+//using DSU( UNION)
+// int numIslands01(vector<vector<char>>& grid){
+//     int n = grid.size();
+//         int m = grid[0].size();
+//         int c=0;
+//         vector<int> par, size;
+
+//         for(int i=0; i<n*m; i++){
+//             par.push_back(i);
+//         }
+
+//         for(int i=0; i<n; i++){
+//             for(int j=0; j<m; j++){
+//                 if(grid[i][j] == '1'){
+//                     c++;
+//                     par.push_back(i*m +j);
+//                     size.push_back(1);
+//                 }
+//             }
+//         }
+
+//         for(int i=0; i<n; i++){
+//             for(int j=0; j<m; j++){
+//                 if(grid[i][j] == '1'){
+//                     if(j+1 < m && grid[i][j+1] == '1'){
+//                         int p1 = findParent(i*m +j);
+//                     }
+//                 }
+//             }}
+// }
+
+int main(){
+return 0;
 }

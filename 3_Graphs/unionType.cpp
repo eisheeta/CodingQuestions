@@ -2,13 +2,15 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include<math.h>
 
 using namespace std;
 
-vector<int> par;
-vector<int> size;
 
-int findParent(int u)
+vector<int> par;
+vector<int> size1;
+
+int findParent(int u )
 {
     if (par[u] == u)
         return u;
@@ -20,15 +22,15 @@ int findParent(int u)
 
 void merge(int p1, int p2)
 {
-    if (size[p1] < size[p2])
+    if (size1[p1] < size1[p2])
     {
         par[p1] = p2;
-        size[p2] += size[p1];
+        size1[p2] += size1[p1];
     }
     else
     {
         par[p2] = p1;
-        size[p1] += size[p2];
+        size1[p1] += size1[p2];
     }
 }
 
@@ -58,9 +60,33 @@ vector<int> findRedundantConnection(vector<vector<int>> &edges)
     return ans;
 }
 
-void kruskalAlgoForMST(vector<vector<int>> &graph)
-{
-    sort(graph.begin(), graph.end(), [](vector<int> a, vector<int> b) -> {
-        return a[2] < b[2];
-    });
+string smallesteEquivalentString(string a, string b, string s){
+    
+    vector<int> par;
+    int n = a.size();
+
+    for(int i=0; i<26; i++){
+        par.push_back(i);
+    }
+
+    for(int i=0; i<a.length(); i++)
+    {
+        int p1 = findParent(a[i]-'a');
+        int p2 = findParent(b[i]-'a');
+        int min1 = min(p1, p2);
+        
+        par[p1] = min1;
+        par[p2] = min1;
+
+
+    }
+
 }
+
+
+// void kruskalAlgoForMST(vector<vector<int>> &graph)
+// {
+//     sort(graph.begin(), graph.end(), [](vector<int> a, vector<int> b) -> {
+//         return a[2] < b[2];
+//     });
+// }
