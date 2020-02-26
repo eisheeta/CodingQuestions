@@ -83,6 +83,81 @@ string smallesteEquivalentString(string a, string b, string s){
 
 }
 
+//leetcode 200  USING DSU(iNCOMPLETE)
+int numIslands_01(vector<vector<char>> &grid)
+{
+    int n = grid.size();
+    int m = grid[0].size();
+    int countIslands = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (grid[i][j] == '1')
+                countIslands++;
+            par.push_back(i * m + j);
+            size1.push_back(1);
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (grid[i][j] == '1')
+            {
+                if (j + 1 < m && grid[i][j + 1] == '1')
+                {
+                    int p1 = findParent(i * m + j);
+                    int p2 = findParent(i * m + j + 1);
+                    if (p1 != p2)
+                    {
+                        countIslands--;
+                        merge(p1, p2);
+                    }
+                }
+
+                if (i + 1 < n && grid[i + 1][j] == '1')
+                {
+                    int p1 = findParent(i * m + j);
+                    int p2 = findParent((i + 1) * m + j);
+                    if (p1 != p2)
+                    {
+                        countIslands--;
+                        merge(p1, p2);
+                    }
+                }
+            }
+        }
+    }
+}
+
+int islandPerimeter(vector<vector<int>> &grid)
+{
+    int n = grid.size();
+    int m = grid[0].size();
+    int islands = 0;
+    int nbrs = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (grid[i][j] == 1)
+            {
+                islands++;
+                if (j + 1 < m && grid[i][j + 1] == 1)
+                    nbrs++;
+                if (i + 1 < n && grid[i + 1][j] == 1)
+                    nbrs++;
+            }
+        }
+    }
+
+    return islands * 4 - 2 * nbrs;
+}
+
 
 // void kruskalAlgoForMST(vector<vector<int>> &graph)
 // {
@@ -90,3 +165,7 @@ string smallesteEquivalentString(string a, string b, string s){
 //         return a[2] < b[2];
 //     });
 // }
+
+int main(){
+    return 0;
+}
