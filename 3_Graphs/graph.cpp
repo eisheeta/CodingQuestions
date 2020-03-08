@@ -19,13 +19,15 @@ class Edge{
 
 int n=7;
 vector<vector<Edge *>>graph(7, vector<Edge*>());
+vector<vector<Edge *>>Newgraph(7, vector<Edge*>());
 
-void addEdge(int u, int v, int w){
+
+void addEdge(vector<vector <Edge *>> &graph, int u, int v, int w){
     graph[u].push_back(new Edge(v, w));
     graph[v].push_back(new Edge(u, w));
 }
 
-void display(){
+void display(vector<vector <Edge *>> &graph){
     for(int i=0; i<n; i++){
 
         cout<<i<<" ->";
@@ -37,18 +39,63 @@ void display(){
     }
 }
 
-void createGraph(){
-    addEdge(0, 1, 10);
-    addEdge(0, 3, 10);
-    addEdge(1, 2, 10);
-    addEdge(2, 3, 40);
-    addEdge(3, 4, 2);
-    addEdge(4, 5, 2);
-    addEdge(4, 6, 2);
-    addEdge(4, 6, 8);
-    addEdge(5, 6, 3);
-    display();
+class dpair{
+    public:
+    int u=0;
+    int v=0;
+    int w=0;
+    int wsf=0;
+    string psf="";
+
+    dpair(int u, int v, int w, int wsf, string psf){
+        this->u = u;
+        this->v =v;
+        this->w = w;
+        this->wsf = wsf;
+    string psf ="";
+    }
+};
+
+void dijkstraAlgo(int src){
+    vector <bool> vis(n, false);
+    queue<dpair> que;
+    que.push(dpair(src, -1, 0, 0, to_string(src)));
+
+    while(que.size()!=0){
+        dpair pair = que.front();
+        que.pop();
+
+        if(!vis[pair.u]){
+            if(pair.v != -1)
+                addEdge(Newgraph, pair.u, pair.v, pair.w);
+
+        }
+
+        else
+        {
+            continue;
+        }
+        
+        vis[pair.u] = true;
+        for(Edge*e: graph[pair.u]){
+            if(!vis[e->v])
+            que.push(dpair(e->v, pair.u, e->w, pair.wsf + e->w, pair.psf + to_string(pair.v)));
+        } 
+    }
 }
+
+// void createGraph(){
+//     addEdge(0, 1, 10);
+//     addEdge(0, 3, 10);
+//     addEdge(1, 2, 10);
+//     addEdge(2, 3, 40);
+//     addEdge(3, 4, 2);
+//     addEdge(4, 5, 2);
+//     addEdge(4, 6, 2);
+//     addEdge(4, 6, 8);
+//     addEdge(5, 6, 3);
+//     display();
+// }
 
 
 //my method
@@ -399,24 +446,84 @@ void bipartite(){
     }
 }
 
+//...............................................................
+//dijkstra
+class dPair
+{
+public:
+    int src = 0;
+    int par = 0;
+    int w = 0;
+    int wsf = 0;
+    string psf = "";
 
+    dPair(int src, int par, int w, int wsf, string psf)
+    {
+        this->src = src;
+        this->par = par;
+        this->w = w;
+        this->wsf = wsf;
+        this->psf = psf;
+    }
 
-// find union
+    bool operator<(dPair const &o) const // dijikstra
+    {
+        return this->wsf > o.wsf;
+    }
 
+    // bool operator<(dpair_ const &o) const // prims
+    // {
+    //     return this->w > o.w;
+    // }
+};
 
+void dijikstraAlgo(int src)
+{
+    vector<bool> vis(n, false);
+    priority_queue<dPair> que;
+    que.push(dPair(src, -1, 0, 0, to_string(src)));
 
+    while (que.size() != 0)
+    {
+        dPair pair = que.top();
+        que.pop();
 
+        if (!vis[pair.src])
+        {
+            if (pair.par != -1)
+            {
+                Newgraph[pair.src].push_back(new Edge(pair.par, pair.w));
+                Newgraph[pair.par].push_back(new Edge(pair.src, pair.w));
+            }
+        }
+        else
+            continue;
 
+        vis[pair.src] = true;
+        for (Edge *e : graph[pair.src])
+        {
+            if (!vis[e->v])
+                que.push(dPair(e->v, pair.src, e->w, pair.wsf + e->w, pair.psf + to_string(e->v)));
+        }
+    }
 
+    //display.
+    for (int i = 0; i < n; i++)
+    {
+        cout << i << " -> ";
+        for (Edge *e : graph[i])
+        {
+            cout << "(" << e->v << ", " << e->w << ") ";
+        }
+        cout << endl;
+    }
 
-
-
-
-
+    cout << endl;
+}
 
 
 void solve(){
-    createGraph();
+    //createGraph();
     vector<bool> vis(n, false);
     //removeVertex(0);
     //removeEdge(1, 0);
