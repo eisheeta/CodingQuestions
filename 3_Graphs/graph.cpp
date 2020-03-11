@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<queue>
+#include<math.h>
 
 using namespace std;
 
@@ -300,7 +301,7 @@ void surroundRegions(vector<vector<char>> &board){
 
 
 //LEETCODE COUNT SERVERS
-int count =0;
+static int count =0;
     
     int markVisited(int r, int c, int n, int m, vector<vector<int>>& grid){
         
@@ -521,6 +522,41 @@ void dijikstraAlgo(int src)
     cout << endl;
 }
 
+const int n = 9;
+//ARTICULATION POINT: Points that can increase the no. of components in the graph
+void dfs(vector<vector<int>> &graph, int src, vector<bool> &vis, vector<int> ans)
+{
+    vis[src] = true;
+    for (int nbr : graph[src])
+    {
+        if (!vis[nbr])
+            dfs(graph, nbr, vis, ans);
+    }
+
+    ans.push_back(src);
+}
+
+vector<int> artPt(vector<vector<int>> &graph){
+    
+    vector<bool> vis(n, false);
+    vector<int> ans;
+    vector<int> discovered;
+    vector<int> low;
+
+    for(int i=0; i<n; i++){
+        if(!vis[i]){
+            dfs(graph, i, vis, ans);
+        }
+
+        else{
+
+            //low[i] = min(low[i], discovered[]);
+        }
+    }
+
+    
+}
+
 
 void solve(){
     //createGraph();
@@ -531,6 +567,8 @@ void solve(){
 
     GCC();
 }
+
+//longest increasing path
 
 int main(){
 
